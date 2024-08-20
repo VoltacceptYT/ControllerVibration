@@ -26,7 +26,7 @@ new Vue({
 
         vibrate() {
             this.gamepad.vibrationActuator.playEffect('dual-rumble', {
-                duration: 0,
+                duration: 100,
                 strongMagnitude: this.gamepad.buttons[7].value,
                 weakMagnitude: this.gamepad.buttons[7].value
             })
