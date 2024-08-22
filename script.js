@@ -21,21 +21,29 @@ new Vue({
 
         toggleGo() {
             this.go = !this.go;
-            if (this.go) this.vibrate();
+            if (this.go) this.startTest();
         },
 
-        vibrate() {
+        startTest() {
+            var triggerPrecisionTooltip = document.getElementById("triggerPrecisionTooltip");
             this.gamepad.vibrationActuator.playEffect('dual-rumble', {
                 duration: 100,
                 strongMagnitude: this.gamepad.buttons[7].value,
                 weakMagnitude: this.gamepad.buttons[7].value
             })
                 .then(() => {
-                    if (this.go) this.vibrate();
+                    if (this.go) this.startTest();
                 })
                 .catch(err => console.log(err))
+            this.triggerPrecision = Math.round(this.gamepad.buttons[7].value * 100);
+
+            var val = Math.round(this.triggerPrecision);
+            var min = this.triggerPrecision.min ? this.triggerPrecision.min : 0;
+            var max = this.triggerPrecision.max ? this.triggerPrecision.max : 100;
+            var newVal = Number((((val - min) * 100) / (max - min)));
+            triggerPrecisionTooltip.innerText = val;
             
-            this.triggerPrecision = this.gamepad.buttons[7].value * 100;
+            triggerPrecisionTooltip.style.left = newVal + "%";
         }
 
     },
